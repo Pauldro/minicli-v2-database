@@ -136,7 +136,14 @@ class DatabaseConnector {
             $this->errorMsg = "Failed to connect Propel Database";
             return false;
         }
+
         $file = VendorFilepathParser::instance()->parse($this->db->propelLoadDatabaseFilepath);
+		
+		if (file_exists($file) === false) {
+			$this->errorMsg = "Propel file not found: '$file'";
+			return false;
+		}
+
         try {
 			require_once($file);
 		} catch (\Exception $e) {
