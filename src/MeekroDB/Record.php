@@ -4,6 +4,7 @@ use Pauldro\Minicli\v2\Util\Data;
 
 /**
  * Record
+ * 
  * Class for DatabaseTable Record
  */
 class Record extends Data {
@@ -15,7 +16,8 @@ class Record extends Data {
 	 * Return Keys for this Model
 	 * @return array
 	 */
-	public function primarykey() {
+	public function primarykey() : array 
+	{
 		$keys = [];
 
 		foreach (static::PRIMARYKEY as $key) {
@@ -28,7 +30,8 @@ class Record extends Data {
 	 * Return Primary Key as a string
 	 * @return string
 	 */
-	public function primarykeyString() {
+	public function primarykeyString() : string 
+	{
 		return implode(static::GLUE, $this->primarykey());
 	}
 }

@@ -4,10 +4,11 @@ use Pauldro\Minicli\v2\Util\DataArray;
 
 /**
  * Record
- * Class for DatabaseTable Record
+ * 
+ * Container for Lists of Records
  */
 class RecordList extends DataArray {
-    public function makeBlankItem() {
+    public function makeBlankItem() : Record {
         return new Record();
     }
 }

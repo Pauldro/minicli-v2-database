@@ -20,7 +20,8 @@ abstract class AbstractQueryWrapper {
 	1. Constructors
 ============================================================= */
 	/** @return static */
-	public static function instance() {
+	public static function instance() : static
+	{
 		if (empty(static::$instance)) {
 			static::$instance = new static();
 		}
@@ -34,7 +35,8 @@ abstract class AbstractQueryWrapper {
 	 * Return Query Class Name
 	 * @return string
 	 */
-	public function queryClassName() {
+	public function queryClassName() : string
+	{
 		return $this::MODEL.'Query';
 	}
 
@@ -42,7 +44,8 @@ abstract class AbstractQueryWrapper {
 	 * Return model Class Name
 	 * @return string
 	 */
-	public function modelClassName() {
+	public function modelClassName() : string
+	{
 		return static::MODEL;
 	}
 
@@ -50,7 +53,8 @@ abstract class AbstractQueryWrapper {
 	 * Return Model
 	 * @return Record
 	 */
-	public function newRecord() {
+	public function newRecord() : Record
+	{
 		$class = $this->modelClassName();
 		return new $class();
 	}
@@ -59,16 +63,18 @@ abstract class AbstractQueryWrapper {
 	 * Return New Query Class
 	 * @return Query
 	 */
-	public function getQueryClass() {
+	public function getQueryClass() : Query
+	{
 		$class = static::queryClassName();
 		return $class::create();
 	}
 
 	/**
 	 * Returns the associated CodeQuery class for table code
-	 * @return mixed
+	 * @return Query
 	 */
-	public function query() {
+	public function query() : Query
+	{
 		return $this->getQueryClass();
 	}
 }

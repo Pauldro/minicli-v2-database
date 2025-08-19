@@ -1,6 +1,7 @@
 <?php namespace Pauldro\Minicli\v2\Database\MeekroDB;
 // MeekroDB
 use MeekroDB;
+use MeekroDBException;
 // Pauldro Minicli
 use Pauldro\Minicli\v2\Database\DatabaseConnector;
 use Pauldro\Minicli\v2\Database\Exceptions\ConnectionFailureException;
@@ -31,7 +32,8 @@ abstract class AbstractTable {
 	protected static $instance;
 
 	/** @return static */
-	public static function instance() {
+	public static function instance() : static
+	{
 		if (empty(static::$instance)) {
 			$instance = new static();
 			static::$instance = $instance;
@@ -43,9 +45,10 @@ abstract class AbstractTable {
 	/**
 	 * Return MeekroDB Connection
 	 * @throws ConnectionFailureException
-	 * @return bool|MeekroDB
+	 * @return MeekroDB
 	 */
-	public function getMeekroDB() {
+	public function getMeekroDB() : MeekroDB
+	{
 		/** @var DatabaseConnector|null */
 		$db = Session::getFor('databases', static::SESSION_CONNECTION_NAME);
 
@@ -63,7 +66,8 @@ abstract class AbstractTable {
 	 * Init Table, install if needed
 	 * @return bool
 	 */
-	public function init() {
+	public function init() : bool
+	{
 		if ($this->tableExists()) {
 			return true;
 		}
@@ -74,7 +78,8 @@ abstract class AbstractTable {
 	 * Install Table in Database
 	 * @return bool
 	 */
-	public function install() {
+	public function install() : bool
+	{
 		if ($this->tableExists()) {
 			return true;
 		}
@@ -85,10 +90,11 @@ abstract class AbstractTable {
 	 * Return if Table Exists
 	 * @return bool
 	 */
-	public function tableExists() {
+	public function tableExists() : bool
+	{
 		try {
 			$count = $this->countAll();
-		} catch (\MeekroDBException $e) {
+		} catch (MeekroDBException $e) {
 			return preg_match(self::REGEX_TABLE_DOESNT_EXIST, $e->getMessage()) ? false : true;
 		}
 		return true;
@@ -101,7 +107,8 @@ abstract class AbstractTable {
 	 * Return Query for Creating Table in Database
 	 * @return string
 	 */
-	public function queryCreateTable() {
+	public function queryCreateTable() : string
+	{
 		$sql = 'CREATE TABLE ' . static::TABLE;
 		
 		$cols = [];
@@ -132,16 +139,18 @@ abstract class AbstractTable {
 	 * Return the total number of records
 	 * @return int
 	 */
-	public function countAll() {
+	public function countAll() : int
+	{
 		$tbl = static::TABLE;
-		return $this->getMeekroDB()->queryFirstField("SELECT COUNT(*) FROM $tbl");
+		return intval($this->getMeekroDB()->queryFirstField("SELECT COUNT(*) FROM $tbl"));
 	}
 
 	/**
 	 * Return all records
 	 * @return RecordList{Record}
 	 */
-	public function fetchAll() {
+	public function fetchAll() : RecordList
+	{
 		$tbl = static::TABLE;
 		$results = $this->getMeekroDB()->query("SELECT * FROM $tbl");
 		$list = new RecordList();
@@ -165,12 +174,13 @@ abstract class AbstractTable {
 	 * Return if Table can be Created
 	 * @return bool
 	 */
-	public function createTable() {
+	public function createTable() : bool
+	{
 		$sql = $this->queryCreateTable();
 
 		try {
 			$this->getMeekroDB()->query($sql);
-		} catch (\MeekroDBException $e) {
+		} catch (MeekroDBException $e) {
 			return false;
 		}
 		return true;
@@ -181,7 +191,8 @@ abstract class AbstractTable {
 	 * @param  Record $data
 	 * @return bool
 	 */
-	public function insert(Record $data) {
+	public function insert(Record $data) : bool
+	{
 		if (array_key_exists('updated', static::COLUMNS)) {
 			$data->set('updated', date(static::FORMAT_DATETIME));
 		}
@@ -193,7 +204,8 @@ abstract class AbstractTable {
 	 * @param  Record $data
 	 * @return bool
 	 */
-	public function update(Record $data) {
+	public function update(Record $data) : bool
+	{
 		if (array_key_exists('updated', static::COLUMNS)) {
 			$data->set('updated', date(static::FORMAT_DATETIME));
 		}
@@ -204,7 +216,8 @@ abstract class AbstractTable {
 	 * Return Record Data class
 	 * @return Record
 	 */
-	public function newRecord() {
+	public function newRecord() : Record
+	{
 		$class = static::RECORD_CLASS;
 		return new $class();
 	}
@@ -217,7 +230,8 @@ abstract class AbstractTable {
 	 * @param  array $cols
 	 * @return string		column=:column
 	 */
-	protected function getParamsForQuery($cols, $glue = ',') {
+	protected function getParamsForQuery($cols, $glue = ',') : string
+	{
 		$data = [];
 		foreach ($cols as $col) {
 			$data[] = "$col=:$col";
@@ -230,7 +244,8 @@ abstract class AbstractTable {
 	 * @param  Record	 $data
 	 * @return string		  :col1,:col2
 	 */
-	protected function getParamKeysArray(Record $data) {
+	protected function getParamKeysArray(Record $data) : array
+	{
 		return	array_keys($data->data);
 	}
 
@@ -239,7 +254,8 @@ abstract class AbstractTable {
 	 * @param  Record	 $data
 	 * @return string		  :col1,:col2
 	 */
-	protected function getParamKeysString(Record $data) {
+	protected function getParamKeysString(Record $data) : string
+	{
 		return ':' . implode(',:', array_keys($data->data));
 	}
 
@@ -249,7 +265,8 @@ abstract class AbstractTable {
 	 * @param  array $keys	
 	 * @return array		   [':key' => $value]
 	 */
-	protected function getParamKeyValues(Record $data, $keys = []) {
+	protected function getParamKeyValues(Record $data, $keys = []) : array
+	{
 		$params = [];
 
 		foreach ($data->data as $key => $value) {
@@ -266,7 +283,8 @@ abstract class AbstractTable {
 	 * @param  array $keys	
 	 * @return array		   [':key' => $value]
 	 */
-	protected function getParamKeyValuesArray(array $data, $keys = []) {
+	protected function getParamKeyValuesArray(array $data, $keys = []) : array
+	{
 		$params = [];
 
 		foreach ($data as $key => $value) {
@@ -283,7 +301,8 @@ abstract class AbstractTable {
 	 * @param  Record $data
 	 * @return array
 	 */
-	protected function getRecordPrimaryKeyValuesArray(Record $data) {
+	protected function getRecordPrimaryKeyValuesArray(Record $data) : array
+	{
 		$keyvals = [];
 
 		foreach ($data::PRIMARYKEY as $key) {
@@ -298,7 +317,8 @@ abstract class AbstractTable {
 	 * @param  array $record
 	 * @return bool
 	 */
-	protected function validateArrayKeys(array $record) {
+	protected function validateArrayKeys(array $record) : bool
+	{
 		foreach (array_keys(static::COLUMNS) as $col) {
 			if (array_key_exists($col, $record) === false) {
 				return false;
@@ -312,7 +332,8 @@ abstract class AbstractTable {
 	 * @param  array $r
 	 * @return bool
 	 */
-	protected function arrayHasRecordKeys(array $r) {
+	protected function arrayHasRecordKeys(array $r) : bool
+	{
 		foreach (static::RECORDKEY as $col) {
 			if (array_key_exists($col, $r) === false) {
 				return false;
