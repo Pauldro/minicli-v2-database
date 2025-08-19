@@ -10,7 +10,11 @@ use Pauldro\Minicli\v2\Util\SessionVars as Session;
 
 /**
  * Abstract Table
+ * 
  * Template Class for database CRUD
+ * 
+ * @static static $instance
+ * @property MeekroDB $db
  */
 abstract class AbstractTable {
 	const SESSION_CONNECTION_NAME = '';
@@ -28,8 +32,9 @@ abstract class AbstractTable {
 	const KEY_GLUE	  = '|';
 	const REGEX_TABLE_DOESNT_EXIST = "/(Table)\s\'\w+\.\w+\'\s(doesn't exist)/";
 
-	/** @var static */
 	protected static $instance;
+	protected MeekroDB $meekrodb;
+
 
 	/** @return static */
 	public static function instance() : static
@@ -43,11 +48,20 @@ abstract class AbstractTable {
 	}
 
 	/**
+	 * Init Table, install if needed
+	 * @return bool
+	 */
+	public function init() : bool
+	{
+		$this->initMeekroDB();
+		return $this->initDbTable();
+	}
+
+	/**
 	 * Return MeekroDB Connection
 	 * @throws ConnectionFailureException
-	 * @return MeekroDB
 	 */
-	public function getMeekroDB() : MeekroDB
+	public function initMeekroDB() : void
 	{
 		/** @var DatabaseConnector|null */
 		$db = Session::getFor('databases', static::SESSION_CONNECTION_NAME);
@@ -59,14 +73,14 @@ abstract class AbstractTable {
 		if (empty($meekrodb)) {
 			throw new ConnectionFailureException("Meekro DB connection not found for " . static::SESSION_CONNECTION_NAME);
 		}
-		return $meekrodb;
+		$this->db = $meekrodb;
 	}
 
 	/**
-	 * Init Table, install if needed
+	 * Initialize Database Table
 	 * @return bool
 	 */
-	public function init() : bool
+	public function initDbTable() : bool 
 	{
 		if ($this->tableExists()) {
 			return true;
@@ -84,20 +98,6 @@ abstract class AbstractTable {
 			return true;
 		}
 		return $this->createTable();
-	}
-
-	/**
-	 * Return if Table Exists
-	 * @return bool
-	 */
-	public function tableExists() : bool
-	{
-		try {
-			$count = $this->countAll();
-		} catch (MeekroDBException $e) {
-			return preg_match(self::REGEX_TABLE_DOESNT_EXIST, $e->getMessage()) ? false : true;
-		}
-		return true;
 	}
 
 /* =============================================================
@@ -136,13 +136,27 @@ abstract class AbstractTable {
 	Read Functions
 ============================================================= */
 	/**
+	 * Return if Table Exists
+	 * @return bool
+	 */
+	public function tableExists() : bool
+	{
+		try {
+			$count = $this->countAll();
+		} catch (MeekroDBException $e) {
+			return preg_match(self::REGEX_TABLE_DOESNT_EXIST, $e->getMessage()) ? false : true;
+		}
+		return true;
+	}
+
+	/**
 	 * Return the total number of records
 	 * @return int
 	 */
 	public function countAll() : int
 	{
 		$tbl = static::TABLE;
-		return intval($this->getMeekroDB()->queryFirstField("SELECT COUNT(*) FROM $tbl"));
+		return intval($this->db->queryFirstField("SELECT COUNT(*) FROM $tbl"));
 	}
 
 	/**
@@ -152,7 +166,7 @@ abstract class AbstractTable {
 	public function fetchAll() : RecordList
 	{
 		$tbl = static::TABLE;
-		$results = $this->getMeekroDB()->query("SELECT * FROM $tbl");
+		$results = $this->db->query("SELECT * FROM $tbl");
 		$list = new RecordList();
 
 		if (empty($results)) {
@@ -179,7 +193,7 @@ abstract class AbstractTable {
 		$sql = $this->queryCreateTable();
 
 		try {
-			$this->getMeekroDB()->query($sql);
+			$this->db->query($sql);
 		} catch (MeekroDBException $e) {
 			return false;
 		}
@@ -196,7 +210,7 @@ abstract class AbstractTable {
 		if (array_key_exists('updated', static::COLUMNS)) {
 			$data->set('updated', date(static::FORMAT_DATETIME));
 		}
-		return boolval($this->getMeekroDB()->insert(static::TABLE, $data->data));
+		return boolval($this->db->insert(static::TABLE, $data->data));
 	}
 
 	/**
@@ -209,7 +223,7 @@ abstract class AbstractTable {
 		if (array_key_exists('updated', static::COLUMNS)) {
 			$data->set('updated', date(static::FORMAT_DATETIME));
 		}
-		return boolval($this->getMeekroDB()->update(static::TABLE, $data->data, $this->getRecordPrimaryKeyValuesArray($data)));
+		return boolval($this->db->update(static::TABLE, $data->data, $this->getRecordPrimaryKeyValuesArray($data)));
 	}
 
 	/**
