@@ -7,7 +7,6 @@ use Pauldro\Minicli\v2\Database\DatabaseConnector;
 use Pauldro\Minicli\v2\Database\Exceptions\ConnectionFailureException;
 use Pauldro\Minicli\v2\Util\SessionVars as Session;
 
-
 /**
  * Abstract Table
  * 
