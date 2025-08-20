@@ -318,7 +318,7 @@ abstract class AbstractTable {
 	{
 		$keyvals = [];
 
-		foreach ($data::PRIMARYKEY as $key) {
+		foreach (static::PRIMARYKEY as $key) {
 			$keyvals[$key] = $data->$key;
 		}
 		return $keyvals;
