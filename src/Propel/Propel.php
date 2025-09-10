@@ -17,7 +17,8 @@ class Propel {
 	 * @param  Credentials $db
 	 * @return ConnectionManagerSingle
 	 */
-	public static function propelConnectionManager(Credentials $db) : ConnectionManagerSingle {
+	public static function propelConnectionManager(Credentials $db) : ConnectionManagerSingle
+	{
 		$manager = new ConnectionManagerSingle($db->propelName);
 		$manager->setConfiguration(self::propelConfiguration($db));
 		return $manager;
@@ -28,7 +29,8 @@ class Propel {
 	 * @param  Credentials $db
 	 * @return array
 	 */
-	public static function propelConfiguration(Credentials $db) : array {
+	public static function propelConfiguration(Credentials $db) : array
+	{
 		return [
 			'classname' => 'Propel\\Runtime\\Connection\\ConnectionWrapper',
 			'dsn' => "mysql:host=$db->host;dbname=$db->name",
@@ -49,7 +51,8 @@ class Propel {
 	 * Return Service Container
 	 * @return StandardServiceContainer
 	 */
-	public static function getServiceContainer() : StandardServiceContainer  {
+	public static function getServiceContainer() : StandardServiceContainer
+	{
 		return PropelRuntime::getServiceContainer();
 	}
 
@@ -58,7 +61,8 @@ class Propel {
 	 * @param  string $name
 	 * @return ConnectionWrapper
 	 */
-	public static function getConnection($name) : ConnectionWrapper {
+	public static function getConnection($name) : ConnectionWrapper
+	{
 		return PropelRuntime::getConnection($name);
 	}
 
@@ -66,7 +70,8 @@ class Propel {
 	 * Return Connection Interface for debug
 	 * @return ConnectionWrapper
 	 */
-	public static function getConnectionDebug($name) : ConnectionWrapper {
+	public static function getConnectionDebug($name) : ConnectionWrapper
+	{
 		$conn = self::getConnection($name);
 		$conn->useDebug(true);
 		return $conn;
