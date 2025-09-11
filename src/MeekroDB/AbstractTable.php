@@ -3,13 +3,11 @@
 use MeekroDB;
 use MeekroDBException;
 // Pauldro Minicli
-use Pauldro\Minicli\v2\Database\DatabaseConnector;
+use Pauldro\Minicli\v2\Database\Database;
 use Pauldro\Minicli\v2\Database\Exceptions\ConnectionFailureException;
 use Pauldro\Minicli\v2\Util\SessionVars as Session;
 
 /**
- * Abstract Table
- * 
  * Template Class for database CRUD
  * 
  * @static static $instance
@@ -62,7 +60,7 @@ abstract class AbstractTable {
 	 */
 	public function initMeekroDB() : void
 	{
-		/** @var DatabaseConnector|null */
+		/** @var Database|null */
 		$db = Session::getFor('databases', static::SESSION_CONNECTION_NAME);
 
 		if (empty($db)) {

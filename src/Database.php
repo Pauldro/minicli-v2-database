@@ -10,14 +10,13 @@ use Pauldro\Minicli\v2\Database\Propel\Propel;
 use Pauldro\Minicli\v2\Services\VendorFilepathParser;
 
 /**
- * DatabaseConnector
- * Makes Database Connection
+ * Container for Database Connections
  *
- * @property PDO $pdo
- * @property MeekroDB $meekrodb
+ * @property PDO              $pdo
+ * @property MeekroDB         $meekrodb
  * @property PropelConnection $propel
  */
-class DatabaseConnector {
+class Database {
     public $errorMsg = '';
 	private $pdo = false;
 	private $meekrodb = false;
