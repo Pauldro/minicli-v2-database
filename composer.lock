@@ -130,12 +130,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Pauldro/minicli-v2.git",
-                "reference": "ec9f093ed8c862062fd5c904fe408e523bad20db"
+                "reference": "41b8691f7a3196ab794edea2898bd68e0920d0eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Pauldro/minicli-v2/zipball/ec9f093ed8c862062fd5c904fe408e523bad20db",
-                "reference": "ec9f093ed8c862062fd5c904fe408e523bad20db",
+                "url": "https://api.github.com/repos/Pauldro/minicli-v2/zipball/41b8691f7a3196ab794edea2898bd68e0920d0eb",
+                "reference": "41b8691f7a3196ab794edea2898bd68e0920d0eb",
                 "shasum": ""
             },
             "require": {
@@ -174,7 +174,7 @@
                 "issues": "https://github.com/Pauldro/minicli-v2/issues",
                 "source": "https://github.com/Pauldro/minicli-v2/tree/main"
             },
-            "time": "2025-09-09T20:08:41+00:00"
+            "time": "2025-09-11T18:35:45+00:00"
         },
         {
             "name": "phpoption/phpoption",
@@ -489,12 +489,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/config.git",
-                "reference": "3247e1beb337aaf02977fbbc687f98c72bd1756e"
+                "reference": "f18dc5926cb203e125956987def795d052ee774e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/config/zipball/3247e1beb337aaf02977fbbc687f98c72bd1756e",
-                "reference": "3247e1beb337aaf02977fbbc687f98c72bd1756e",
+                "url": "https://api.github.com/repos/symfony/config/zipball/f18dc5926cb203e125956987def795d052ee774e",
+                "reference": "f18dc5926cb203e125956987def795d052ee774e",
                 "shasum": ""
             },
             "require": {
@@ -560,7 +560,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-09-08T12:01:56+00:00"
+            "time": "2025-09-11T09:57:09+00:00"
         },
         {
             "name": "symfony/console",
@@ -1461,12 +1461,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/string.git",
-                "reference": "2cc50899684cb3caccbd82140a9221a7456679b4"
+                "reference": "5621f039a71a11c87c106c1c598bdcd04a19aeea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/string/zipball/2cc50899684cb3caccbd82140a9221a7456679b4",
-                "reference": "2cc50899684cb3caccbd82140a9221a7456679b4",
+                "url": "https://api.github.com/repos/symfony/string/zipball/5621f039a71a11c87c106c1c598bdcd04a19aeea",
+                "reference": "5621f039a71a11c87c106c1c598bdcd04a19aeea",
                 "shasum": ""
             },
             "require": {
@@ -1480,7 +1480,6 @@
                 "symfony/translation-contracts": "<2.5"
             },
             "require-dev": {
-                "symfony/error-handler": "^5.4|^6.0|^7.0",
                 "symfony/http-client": "^5.4|^6.0|^7.0",
                 "symfony/intl": "^6.2|^7.0",
                 "symfony/translation-contracts": "^2.5|^3.0",
@@ -1543,7 +1542,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-09-05T18:17:25+00:00"
+            "time": "2025-09-11T14:32:46+00:00"
         },
         {
             "name": "symfony/translation",
