@@ -6,7 +6,9 @@ use Minicli\ServiceInterface;
 // Pauldro Minicli
 use Pauldro\Minicli\v2\App\App;
 use Pauldro\Minicli\v2\Database\Credentials;
+use Pauldro\Minicli\v2\Exceptions\MissingEnvVarsException;
 use Pauldro\Minicli\v2\Services\Env;
+
 
 /**
  * Parses Database Credentials from main app .env file
@@ -25,6 +27,18 @@ class DbCredentialsParser implements ServiceInterface {
     public function load(MinicliApp $app) : void
     {
         $this->env = $app->dotenv;
+    }
+
+    /**
+     * Validate that required variables are set
+     * @param  array  $required
+     * @param  string $prefix
+     * @throws MissingEnvVarsException
+     * @return bool
+     */
+    public function required(array $required, string $prefix) : bool
+    {
+        return $this->env->requiredPrefixed($required, $prefix);
     }
 
     /**
