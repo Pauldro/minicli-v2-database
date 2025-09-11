@@ -1,4 +1,5 @@
-<?php namespace Pauldro\Minicli\v2\Database;
+<?php namespace Pauldro\Minicli\v2\Database\Services;
+
 use Exception;
 // Minicli
 use Minicli\App as MinicliApp;

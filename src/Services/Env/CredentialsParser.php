@@ -13,7 +13,7 @@ use Pauldro\Minicli\v2\Services\Env;
 /**
  * Parses Database Credentials from main app .env file
  */
-class DbCredentialsParser implements ServiceInterface {
+class CredentialsParser implements ServiceInterface {
     const VARS = ['HOST', 'PORT', 'USER', 'PASSWORD', 'PROPEL.CONNECTION.NAME', 'PROPEL.ISDEFAULT', 'PROPEL.LIBRARY.NAME'];
 
     private Env $env;
