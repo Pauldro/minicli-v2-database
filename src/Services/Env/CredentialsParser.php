@@ -16,6 +16,7 @@ use Pauldro\Minicli\v2\Services\Env;
 class CredentialsParser implements ServiceInterface {
     const VARS = ['HOST', 'PORT', 'USER', 'PASSWORD', 'PROPEL.CONNECTION.NAME', 'PROPEL.ISDEFAULT', 'PROPEL.LIBRARY.NAME'];
     const VARS_REQUIRED = ['HOST', 'PORT', 'USER', 'PASSWORD'];
+    const VARS_PROPEL   = ['PROPEL.CONNECTION.NAME', 'PROPEL.ISDEFAULT', 'PROPEL.LIBRARY.NAME'];
     
     private Env $env;
 
